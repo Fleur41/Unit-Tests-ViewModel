@@ -5,29 +5,26 @@ import com.example.unscramble.data.getUnscrambledWord
 import com.example.unscramble.ui.GameViewModel
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class GameViewModelTest {
     private val viewModel = GameViewModel()
 
     @Test
-    fun gameViewModel_CorrectWordGuessed_ScoreUpdatedAndErrorFlagUnset() {
-        var currentGameUiState = viewModel.uiState.value
-        val correctPlayerWord = getUnscrambledWord(currentGameUiState.currentScrambledWord)
+    fun gameViewModel_IncorrectGuess_ErrorFlagSet() {
+        // Given an incorrect word as input
+        val incorrectPlayerWord = "and"
 
-        viewModel.updateUserGuess(correctPlayerWord)
+        viewModel.updateUserGuess(incorrectPlayerWord)
         viewModel.checkUserGuess()
 
-
-        currentGameUiState = viewModel.uiState.value
-        // Assert that checkUserGuess() method updates isGuessedWordWrong is updated correctly.
-        assertFalse(currentGameUiState.isGuessedWordWrong)
-        // Assert that score is updated correctly.
-        assertEquals(20, currentGameUiState.score)
-        // Assert that score is updated correctly.
-        assertEquals(SCORE_AFTER_FIRST_CORRECT_ANSWER, currentGameUiState.score)
+        val currentGameUiState = viewModel.uiState.value
+        // Assert that score is unchanged
+        assertEquals(0, currentGameUiState.score)
+        // Assert that checkUserGuess() method updates isGuessedWordWrong correctly
+        assertTrue(currentGameUiState.isGuessedWordWrong)
     }
-
     companion object {
         private const val SCORE_AFTER_FIRST_CORRECT_ANSWER = SCORE_INCREASE
     }
