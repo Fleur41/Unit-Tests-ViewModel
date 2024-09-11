@@ -1,5 +1,6 @@
 package com.example.unscramble.data.ui.test
 
+import com.example.unscramble.data.SCORE_INCREASE
 import com.example.unscramble.data.getUnscrambledWord
 import com.example.unscramble.ui.GameViewModel
 import junit.framework.TestCase.assertEquals
@@ -10,7 +11,7 @@ class GameViewModelTest {
     private val viewModel = GameViewModel()
 
     @Test
-    fun gameViewModel_CorrectWordGuessed_ScoreUpdatedAndErrorFlagUnset(){
+    fun gameViewModel_CorrectWordGuessed_ScoreUpdatedAndErrorFlagUnset() {
         var currentGameUiState = viewModel.uiState.value
         val correctPlayerWord = getUnscrambledWord(currentGameUiState.currentScrambledWord)
 
@@ -23,6 +24,12 @@ class GameViewModelTest {
         assertFalse(currentGameUiState.isGuessedWordWrong)
         // Assert that score is updated correctly.
         assertEquals(20, currentGameUiState.score)
-
+        // Assert that score is updated correctly.
+        assertEquals(SCORE_AFTER_FIRST_CORRECT_ANSWER, currentGameUiState.score)
     }
+
+    companion object {
+        private const val SCORE_AFTER_FIRST_CORRECT_ANSWER = SCORE_INCREASE
+    }
+
 }
